@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coffee shops</title>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300&display=swap" rel="stylesheet">
+    <link href="style.css" rel="stylesheet" type="text/css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+    <h1 class="title">Coffe bars and shops</h1>
+    <div id="homepage">
+        <h1>Look for a coffe shop in your area</h1>
+        <div id="coffees">
+            <div id="coffee-container">
+                <form class="data">
+                    <label>Enter your Latitude:</label>
+                    <input id="latitude" placeholder="latitude" type="text" name="latitude" required />
+                    <label>Enter your Longitude:</label>
+                    <input id="longitude" placeholder="longitude" type="text" name="longitude" required />
+                    <input id="submit" type="submit" value="Find Coffe shop" />
+                </form>
+                <ul></ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        const render = document.querySelector('ul');
+        const lng = document.getElementById('longitude');
+        const lat = document.getElementById('latitude');
+
+        
+        document.querySelector('#submit').addEventListener('click', (e) => {
+            e.preventDefault();
+            if(lng.value > 0 && lat.value > 0) {
+            render.innerHTML = '';
+            axios.get('/api/coffee?lng=' + lng.value + '&lat=' + lat.value)
+                .then(function (response) {
+                    // handle success
+                    const renderData = response.data;
+                    console.log(renderData);
+                    if(renderData.length === 0) {
+                        return render.innerHTML = ` 
+                        <li>
+                            <span class="name">Sorry but there is no good Coffee shop available near you</span>
+                            </li>`;
+                    }
+                    renderData.map(item => {
+                        return render.innerHTML += `
+                        <li>
+                            <span class="wifi">Wifi</span>
+                            <span class=${item.wifi}></span>
+                            <span class="name">${item.name}</span>
+                            <span class="feature">Best order: ${item.feature}</span>
+                            <span class="dist">${Math.floor(item.dis)} m</span>
+                        </li>
+                `;
+                    });
+                    lng.value = '';
+                    lat.value = '';
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                });
+            }
+        });
+    
+
+
+
+    </script>
+</body>
+
+</html>
