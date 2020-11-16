@@ -15,7 +15,7 @@ router.get('/coffee', (req, res, next) => {
             'type': 'Point',
             'coordinates': [parseFloat(req.query.lng), parseFloat(req.query.lat)]
         },  // latitude and longitude from url parameters 
-        maxDistance: 500, // meters
+        maxDistance: 1000, // meters
         spherical: true,     // counts distance based on sphere shape
         distanceField: "dis"
     }

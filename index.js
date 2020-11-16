@@ -7,8 +7,12 @@ const routes = require('./routes/api.js');
 const app = express();
 
 //connect to mongoDB
+const dataBase = 'mongodb+srv://@cluster0.8vdaq.mongodb.net/node-auth?retryWrites=true&w=majority';
+mongoose.connect(dataBase, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex:true })
+.then(data => app.listen(4000))
+.catch(err => console.log(err));
 
-mongoose.connect('mongodb://localhost/coffeedzo', { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true });
+//mongoose.connect('mongodb://localhost/coffeedzo', { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true });
 mongoose.Promise = global.Promise; //overwriting mongo promise which is depricated with node promise
 
 // serve html, css, images files
@@ -31,6 +35,6 @@ app.get('/', function(req, res) {
 });
 
 //listen for requests
-app.listen(process.env.port || 4000, function() {
-    console.log('listening for requests');
-});
+// app.listen(process.env.port || 4000, function() {
+//     console.log('listening for requests');
+// });
